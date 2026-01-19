@@ -3,89 +3,66 @@
 // Desafio Batalha Naval - MateCheck
 // Nível Novato: Implementação da lógica básica de posicionamento de navios em um tabuleiro de Batalha Naval utilizando vetores bidimensionais.
 // Nível Aventureiro: Expansão do tabuleiro (matriz 10x10) e adição de mais navios, incluindo posicionamentos na diagonal.
+// Nível Mestre: Implementação ed habilidades especiais, utilizando matrizes com padrões específicos (cone, cruz e octaedro).
 
-#define TAM 10
+#define TAM 5
 
-int main() {
-
-    int tabuleiro[TAM][TAM];
+void imprimirMatriz(int matriz[TAM][TAM]) {
     int i, j;
-
-    /* === Inicializa o tabuleiro com água === */
     for (i = 0; i < TAM; i++) {
         for (j = 0; j < TAM; j++) {
-            tabuleiro[i][j] = 0;
-        }
-    }
-
-    /* === Definição manual dos navios === */
-
-    // Navio horizontal (tamanho 4)
-    int navioH_x = 1;   // coluna inicial
-    int navioH_y = 2;   // linha
-    int tamH = 4;
-
-    // Navio vertical (tamanho 3)
-    int navioV_x = 7;   // coluna
-    int navioV_y = 1;   // linha inicial
-    int tamV = 3;
-
-    // Navio diagonal principal ↘ (tamanho 4)
-    int navioD1_x = 0;
-    int navioD1_y = 5;
-    int tamD1 = 4;
-
-    // Navio diagonal secundária ↗ (tamanho 3)
-    int navioD2_x = 6;
-    int navioD2_y = 8;
-    int tamD2 = 3;
-
-    /* === Posicionamento dos navios === */
-
-    // Horizontal →
-    for (i = 0; i < tamH; i++) {
-        tabuleiro[navioH_y][navioH_x + i] = 3;
-    }
-
-    // Vertical ↓
-    for (i = 0; i < tamV; i++) {
-        tabuleiro[navioV_y + i][navioV_x] = 3;
-    }
-
-    // Diagonal principal ↘
-    for (i = 0; i < tamD1; i++) {
-        tabuleiro[navioD1_y + i][navioD1_x + i] = 3;
-    }
-
-    // Diagonal secundária ↗
-    for (i = 0; i < tamD2; i++) {
-        tabuleiro[navioD2_y - i][navioD2_x + i] = 3;
-    }
-
-    /* === Exibição do tabuleiro === */
-
-    printf("\nTABULEIRO BATALHA NAVAL (10x10)\n\n");
-
-    // Cabeçalho das colunas A-J
-    printf("   ");
-    for (j = 0; j < TAM; j++) {
-        printf("%c ", 'A' + j);
-    }
-    printf("\n");
-
-    // Linhas do tabuleiro
-    for (i = 0; i < TAM; i++) {
-
-        if (i < 9)
-            printf(" %d ", i + 1);
-        else
-            printf("%d ", i + 1);
-
-        for (j = 0; j < TAM; j++) {
-            printf("%d ", tabuleiro[i][j]);
+            printf("%d ", matriz[i][j]);
         }
         printf("\n");
     }
+}
+
+int main() {
+
+    int i, j;
+
+    int cone[TAM][TAM]     = {0};
+    int cruz[TAM][TAM]     = {0};
+    int octaedro[TAM][TAM] = {0};
+
+    /* === HABILIDADE: CONE === */
+    for (i = 0; i < TAM; i++) {
+        for (j = 0; j < TAM; j++) {
+            if (j >= (TAM/2 - i) && j <= (TAM/2 + i)) {
+                cone[i][j] = 1;
+            }
+        }
+    }
+
+    /* === HABILIDADE: CRUZ === */
+    for (i = 0; i < TAM; i++) {
+        for (j = 0; j < TAM; j++) {
+            if (i == TAM/2 || j == TAM/2) {
+                cruz[i][j] = 1;
+            }
+        }
+    }
+
+    /* === HABILIDADE: OCTAEDRO (LOSANGO) === */
+    for (i = 0; i < TAM; i++) {
+        for (j = 0; j < TAM; j++) {
+            if ((abs(i - TAM/2) + abs(j - TAM/2)) <= TAM/2) {
+                octaedro[i][j] = 1;
+            }
+        }
+    }
+
+    /* === EXIBIÇÃO DAS MATRIZES === */
+
+    printf("\nHABILIDADE EM CONE:\n\n");
+    imprimirMatriz(cone);
+
+    printf("\nHABILIDADE EM CRUZ:\n\n");
+    imprimirMatriz(cruz);
+
+    printf("\nHABILIDADE EM OCTAEDRO:\n\n");
+    imprimirMatriz(octaedro);
 
     return 0;
+    
 }
